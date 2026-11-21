@@ -115,7 +115,7 @@
   }
 
   /* Выпадающий список */
-  select {
+  select, input[type="file"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #c0ccd8;
@@ -126,11 +126,11 @@
     cursor: pointer;
     outline: none;
   }
-  select:focus { border-color: #2e6da4; }
+  select:focus, input[type="file"]:focus { border-color: #2e6da4; }
 
-  .field-group { margin-top: 10px; }
+  .field-group { margin-top: 10px; margin-bottom: 15px; }
 
-  /* Зелёное уведомление вместо ошибки */
+  /* Зелёное уведомление */
   .success-box {
     margin-top: 22px;
     background: #e8f5e9;
@@ -268,14 +268,19 @@
   <div class="field-group">
     <select id="participant">
       <option value="direct">Прямой (текущий) участник</option>
+      <option value="sad6">МБДОУ №6 «Звёздочка»</option>
+      <option value="sad_nasyp">Детский сад «Насып»</option>
       <option value="admin">Администратор начислений</option>
       <option value="other">Внешний участник</option>
     </select>
   </div>
 
   <div class="step-title">3. Выберите соответствующие счета получателя средств</div>
+  <div class="field-group">
+    <label style="display:block; margin-bottom: 8px; font-size: 13px; color: #555;">Загрузить файл (счет, квитанция и т.д.)</label>
+    <input type="file" id="fileUpload" accept="image/*,.pdf">
+  </div>
 
-  <!-- Заменили ошибку на успех по умолчанию -->
   <div class="success-box" id="statusBox">
     <div class="success-icon">✓</div>
     <div id="statusText">Счета получателя средств успешно найдены и доступны для регистрации.</div>
@@ -295,14 +300,12 @@
 <div id="toast">Данные успешно зарегистрированы (макет)</div>
 
 <script>
-  // Проверяем, выбрана ли услуга (чтобы кнопка не ругалась)
   function submitForm() {
     const selectedService = document.querySelector('input[name="service"]:checked');
     const statusBox = document.getElementById('statusBox');
     const statusText = document.getElementById('statusText');
 
     if (!selectedService) {
-      // Если услуга не выбрана, подсвечиваем список и меняем текст
       statusBox.style.background = '#ffebee';
       statusBox.style.borderLeftColor = '#f44336';
       statusText.style.color = '#c62828';
@@ -323,12 +326,11 @@
     setTimeout(() => toast.classList.remove('show'), 2500);
   }
 
-  // Сброс формы
   function resetForm() {
     document.querySelectorAll('input[name="service"]').forEach(r => r.checked = false);
     document.getElementById('participant').selectedIndex = 0;
+    document.getElementById('fileUpload').value = '';
     
-    // Возвращаем зеленый статус
     const statusBox = document.getElementById('statusBox');
     const statusText = document.getElementById('statusText');
     statusBox.style.background = '#e8f5e9';
